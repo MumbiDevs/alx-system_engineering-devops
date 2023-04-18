@@ -1,2 +1,2 @@
 #!/bin/bash
-echo -e '#!/bin/bash\nls -la > ls_cwd_content; chmod +x write_ls_cwd_content.sh' > write_ls_cwd_content.sh ; chmod +x write_ls_cwd_content
+ls -la > ls_cwd_content
