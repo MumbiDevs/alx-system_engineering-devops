@@ -1,2 +1,2 @@
 #!/bin/bash
-result=$[WATER + STIR] echo "ibase=10;obase=bestchol;$result" | bc
+echo $((bestchol=water+stir))
