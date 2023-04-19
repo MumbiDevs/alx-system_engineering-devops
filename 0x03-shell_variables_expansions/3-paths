@@ -1,2 +1,2 @@
 #!/bin/bash
-IFS=:; set -f; array=($PATH); echo ${#array[@]}
+echo $PATH | awk -F: '{print NF}'
