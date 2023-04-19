@@ -1,2 +1,2 @@
 #!/bin/bash
-BETTY="Racheal"
+head -n 3 iacta | tail -n 1
