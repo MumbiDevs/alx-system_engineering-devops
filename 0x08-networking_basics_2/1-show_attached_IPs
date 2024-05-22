@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Get IPv4 addresses using ifconfig and filter out loopback addresses
+ifconfig | grep -oE 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | cut -d' ' -f2
