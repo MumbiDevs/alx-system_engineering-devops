@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Specify port number
+PORT=98
+
+# Start nc listening on localhost port
+nc -l localhost $PORT
+
+# Alternative (less common): Use nc in server mode (-k to keep running)
+# nc -k -l localhost $PORT
