@@ -9,9 +9,11 @@ exec { 'install_flask':
   require     => Package['python3-pip'],
 }
 
-# Optional: Install additional dependencies that Flask might require
-package { 'libssl-dev':
-  ensure => installed,
+exec { 'install_werkzeug':
+  command     => '/usr/bin/pip3 install Werkzeug==2.0.0',
+  environment => ['PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'],
+  require     => Exec['install_flask'],
 }
+
 
 
