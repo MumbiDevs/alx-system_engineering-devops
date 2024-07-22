@@ -5,9 +5,13 @@ package { 'python3-pip':
 
 exec { 'install_flask':
   command     => '/usr/bin/pip3 install Flask==2.1.0',
-  path        => ['/usr/bin', '/usr/local/bin'],
-  environment => [],
+  environment => ['PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'],
   require     => Package['python3-pip'],
+}
+
+# Optional: Install additional dependencies that Flask might require
+package { 'libssl-dev':
+  ensure => installed,
 }
 
 
