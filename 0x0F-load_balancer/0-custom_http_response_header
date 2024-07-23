@@ -6,7 +6,7 @@ apt-get update -y
 apt-get install nginx -y
 
 # Get the hostname of the server
-HOSTNAME=$(hostname)
+404684-web-01=$(hostname)
 
 # Configure Nginx to include the custom header
 cat <<EOF > /etc/nginx/conf.d/custom_header.conf
