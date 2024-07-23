@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This script installs and configures HAProxy to distribute traffic between web-01 and web-02
 
-# Update and install HAProxy
+# Update package list and install HAProxy
 apt-get update -y
 apt-get install haproxy -y
 
@@ -31,8 +31,8 @@ frontend http_front
 
 backend http_back
     balance roundrobin
-    server web01 [107.23.63.96]:80 check
-    server web02 [100.27.10.114]:80 check
+    server web01 [WEB-01-IP]:80 check
+    server web02 [WEB-02-IP]:80 check
 EOF
 
 # Restart HAProxy to apply the new configuration
@@ -40,4 +40,3 @@ service haproxy restart
 
 # Ensure HAProxy starts on boot
 update-rc.d haproxy defaults
-
