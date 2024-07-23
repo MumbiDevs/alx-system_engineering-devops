@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
-# installs nginx and configures it on a remote server
+# This script installs and configures Nginx to serve a "Hello World!" page on Ubuntu
 
-apt-get -y update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-echo 'Hello World!' > /var/www/html/index.nginx-debian.html
+# Update package list and install Nginx
+apt-get update -y
+apt-get install nginx -y
+
+# Create a custom index.html file with "Hello World!"
+echo "Hello World!" > /var/www/html/index.html
+
+# Start Nginx service (using service command instead of systemctl)
 service nginx start
+
