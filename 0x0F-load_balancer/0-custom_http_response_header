@@ -1,27 +1,39 @@
 #!/usr/bin/env bash
-# This script configures Nginx to include a custom HTTP response header
+# This script configures Nginx to add a custom HTTP response header X-Served-By
 
-# Update and install Nginx
+# Update package list and install Nginx if not installed
 apt-get update -y
 apt-get install nginx -y
 
 # Get the hostname of the server
-404684-web-01=$(hostname)
+HOSTNAME=$(hostname)
 
-# Configure Nginx to include the custom header
-cat <<EOF > /etc/nginx/conf.d/custom_header.conf
+# Backup the default Nginx configuration file if it exists
+if [ -f /etc/nginx/sites-available/default ]; then
+    cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+fi
+
+# Create or update the Nginx configuration file
+cat <<EOF > /etc/nginx/sites-available/default
 server {
     listen 80;
+    root /var/www/html;
+    index index.html;
 
     location / {
-        add_header X-Served-By $HOSTNAME;
-        proxy_pass http://localhost;
+        try_files \$uri \$uri/ =404;
     }
+
+    # Add custom header
+    add_header X-Served-By "$HOSTNAME";
 }
 EOF
 
-# Test Nginx configuration for syntax errors
+# Test the Nginx configuration
 nginx -t
 
-# Restart Nginx to apply the changes
-service nginx reload
+# Restart Nginx to apply the new configuration
+systemctl restart nginx
+
+# Ensure Nginx starts on boot
+systemctl enable nginx
