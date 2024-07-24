@@ -17,7 +17,7 @@ sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.ba
 sudo awk '/listen 80 default_server;/ {print; print "    rewrite ^/redirect_me https://www.youtube.com/ permanent;"; next}1' /etc/nginx/sites-available/default.bak | sudo tee /etc/nginx/sites-available/default
 
 # Restart Nginx to apply changes
-sudo service nginx restart
+sudo systemctl restart nginx
 
-# Check if the redirect rule is applied correctly
-curl -o /dev/null -s -w "%{http_code}\n" http://localhost/redirect_me
+# Confirm the setup
+curl -sI http://localhost/redirect_me | grep "HTTP/1.1 301 Moved Permanently"
