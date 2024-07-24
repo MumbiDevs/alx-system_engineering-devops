@@ -20,4 +20,4 @@ sudo awk '/listen 80 default_server;/ {print; print "    rewrite ^/redirect_me h
 sudo service nginx restart
 
 # Check if the redirect rule is applied correctly
-curl -o /dev/null -s -w "%{http_code}\n" http://localhost/redirect_me
+curl -sI http://localhost/redirect_me | grep "HTTP/1.1 301 Moved Permanently"
