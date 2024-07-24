@@ -1,8 +1,18 @@
 #!/usr/bin/env bash
 
+# Check if exactly one argument (username) is provided
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <username>"
     exit 1
 fi
 
-sudo -u "$1" whoami
+USERNAME="$1"
+
+# Check if the user exists
+if ! id "$USERNAME" &>/dev/null; then
+    echo "User '$USERNAME' does not exist."
+    exit 1
+fi
+
+# Switch to the specified user and execute the 'whoami' command
+sudo -u "$USERNAME" whoami
