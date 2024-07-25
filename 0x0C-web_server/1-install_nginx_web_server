@@ -4,10 +4,9 @@
 # Update package list and install Nginx
 apt-get update -y
 apt-get install nginx -y
-
+sudo ufw allow 'Nginx HTTP'
 # Create a custom index.html file with "Hello World!"
-echo "Hello World!" > /var/www/html/index.html
+sh -c 'echo "Hello World!" > /var/www/html/index.html'
 
 # Start Nginx service (using service command instead of systemctl)
-service nginx start
-
+service nginx restart
