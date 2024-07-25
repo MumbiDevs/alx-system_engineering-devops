@@ -1,23 +1,12 @@
 #!/usr/bin/env bash
-# Update package lists and install Nginx
+# This script installs and configures Nginx to serve a "Hello World!" page on Ubuntu
 
-sudo apt-get -y update
-sudo apt-get -y install nginx
-
-# Allow HTTP traffic through the firewall
+# Update package list and install Nginx
+apt-get update -y
+apt-get install nginx -y
 sudo ufw allow 'Nginx HTTP'
-
-# Create a simple index file
-echo "Hello World" | sudo tee /var/www/html/index.html
-
-# Backup the original Nginx default site configuration
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
-
-# Insert the rewrite rule using awk
-sudo awk '/listen 80 default_server;/ {print; print "    rewrite ^/redirect_me https://www.youtube.com/ permanent;"; next}1' /etc/nginx/sites-available/default.bak | sudo tee /etc/nginx/sites-available/default
-
-# Restart Nginx to apply changes
-sudo service nginx restart
-
-# Check if the redirect rule is applied correctly
-curl -sI http://localhost/redirect_me | grep "HTTP/1.1 301 Moved Permanently"
+# Create a custom index.html file with "Hello World!"
+sh -c 'echo "Hello World!" > /var/www/html/index.html'
+sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
+# Start Nginx service (using service command instead of systemctl)
+service nginx restart
