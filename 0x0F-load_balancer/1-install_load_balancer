@@ -1,60 +1,21 @@
 #!/usr/bin/env bash
-
 # Update package list and install HAProxy
-sudo apt-get update
-sudo apt-get install -y haproxy
+
+sudo apt-get -y update
+sudo apt-get -y install haproxy
 
 # Configure HAProxy
-cat <<EOL | sudo tee /etc/haproxy/haproxy.cfg
-global
-    log /dev/log local0
-    log /dev/log local1 notice
-    chroot /var/lib/haproxy
-    stats socket /run/haproxy/admin.sock mode 660 level admin
-    stats timeout 30s
-    user haproxy
-    group haproxy
-    daemon
+sudo chown $USER:USER /etc/haproxy/haproxy.cfg
 
-    # Default SSL material locations
-    ca-base /etc/ssl/certs
-    crt-base /etc/ssl/private
+echo "
+frontend cryptotechcoder
+bind *:80
+mode http
+default_backend app
 
-    # See: https://ssl-config.mozilla.org/#server=haproxy&version=2.0.4&config=intermediate
-    ssl-default-bind-ciphers PROFILE=SYSTEM
-    ssl-default-bind-options no-sslv3
-
-defaults
-    log     global
-    mode    http
-    option  httplog
-    option  dontlognull
-    timeout connect 5000
-    timeout client  50000
-    timeout server  50000
-    errorfile 400 /etc/haproxy/errors/400.http
-    errorfile 403 /etc/haproxy/errors/403.http
-    errorfile 408 /etc/haproxy/errors/408.http
-    errorfile 500 /etc/haproxy/errors/500.http
-    errorfile 502 /etc/haproxy/errors/502.http
-    errorfile 503 /etc/haproxy/errors/503.http
-    errorfile 504 /etc/haproxy/errors/504.http
-
-frontend http_front
-    bind *:80
-    stats uri /haproxy?stats
-    default_backend http_back
-
-backend http_back
+backend app
     balance roundrobin
-    server 404684-web-01 107.23.63.96:80 check
-    server 404684-web-02 100.27.10.114:80 check
-EOL
+    server 404684-web-01 54.90.51.210:80 check
+    server 404684-web-02 100.27.10.114:80 check" >> /etc/haproxy/haproxy.cfg
 
-# Restart HAProxy to apply the configuration
-sudo systemctl restart haproxy
-
-# Enable HAProxy to start on boot
-sudo systemctl enable haproxy
-
-echo "HAProxy installed and configured successfully."
+sudo service haproxy restart
