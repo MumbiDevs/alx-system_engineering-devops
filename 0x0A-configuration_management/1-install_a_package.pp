@@ -12,14 +12,14 @@ package { 'python3-pip':
 
 # Install Flask using pip3
 package { 'Flask':
-  ensure    => '2.1.0',
-  provider  => 'pip3',
-  require   => Package['python3-pip'],
+  ensure   => '2.1.0',
+  provider => 'pip3',
+  require  => Package['python3-pip'],
 }
 
 # Install Werkzeug using pip3 and ensure it requires Flask
 package { 'Werkzeug':
-  ensure    => '2.1.1',
-  provider  => 'pip3',
-  require   => Package['Flask'],
+  ensure   => '2.1.1',
+  provider => 'pip3',
+  require  => Package['Flask'],
 }
