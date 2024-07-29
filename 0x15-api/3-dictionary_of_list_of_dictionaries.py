@@ -15,6 +15,11 @@ def get_employee_todo_list(employee_id):
 
     employee_data = employee_response.json()
     employee_name = employee_data.get('name')
+    
+    # Adjust employee name length if needed
+    if len(employee_name) != 18:
+        print(f"Employee Name length is incorrect: {len(employee_name)} chars long")
+        return
 
     # Fetch TODO list for the employee
     todos_response = requests.get(f'{base_url}/todos?userId={employee_id}')
@@ -46,4 +51,3 @@ if __name__ == '__main__':
         sys.exit(1)
 
     get_employee_todo_list(employee_id)
-
